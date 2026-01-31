@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio Cinematográfico</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a0a0a0;
+            --accent: #ff3366;
+            --accent-soft: #ff6b8a;
+            --grain-opacity: 0.03;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Film grain overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: var(--grain-opacity);
+            pointer-events: none;
+            z-index: 9999;
+            animation: grain 8s steps(10) infinite;
+        }
+
+        @keyframes grain {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            10% {
+                transform: translate(-5%, -10%);
+            }
+
+            20% {
+                transform: translate(-15%, 5%);
+            }
+
+            30% {
+                transform: translate(7%, -25%);
+            }
+
+            40% {
+                transform: translate(-5%, 25%);
+            }
+
+            50% {
+                transform: translate(-15%, 10%);
+            }
+
+            60% {
+                transform: translate(15%, 0%);
+            }
+
+            70% {
+                transform: translate(0%, 15%);
+            }
+
+            80% {
+                transform: translate(3%, 35%);
+            }
+
+            90% {
+                transform: translate(-10%, 10%);
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            line-height: 0.9;
+        }
+
+        .hero h1 .accent {
+            display: block;
+            color: var(--accent);
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        .hero-subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-top: 2rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Styles */
+        section {
+            min-height: 100vh;
+            padding: 8rem 5%;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .section-title.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* About Section */
+        .about {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .about-image-container {
+            position: relative;
+            aspect-ratio: 3/4;
+            background: var(--bg-secondary);
+            overflow: hidden;
+            border: 1px solid rgba(255, 51, 102, 0.2);
+        }
+
+        .about-image-container::before {
+            content: 'INSIRA SUA FOTO';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            letter-spacing: 0.3em;
+            color: var(--text-secondary);
+            opacity: 0.3;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(20%) contrast(1.1);
+            transition: transform 0.6s ease;
+        }
+
+        .about-image-container:hover .about-image {
+            transform: scale(1.05);
+        }
+
+        .about-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .about-text h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        .about-text p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .skills-list {
+            margin-top: 3rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .skill-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            padding: 0.6rem 1.2rem;
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent-soft);
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Work Sections */
+        .work-section {
+            background: var(--bg-primary);
+        }
+
+        .work-grid {
+            display: grid;
+            gap: 8rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .project {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s ease-out;
+        }
+
+        .project.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project:nth-child(even) {
+            grid-template-columns: 1fr 1.2fr;
+        }
+
+        .project:nth-child(even) .project-image {
+            order: 2;
+        }
+
+        .project-image {
+            position: relative;
+            aspect-ratio: 16/10;
+            background: var(--bg-secondary);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .project-image::before {
+            content: 'INSIRA IMAGEM DO PROJETO';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            color: var(--text-secondary);
+            opacity: 0.2;
+            text-align: center;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(30%) contrast(1.05);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project-image:hover img {
+            transform: scale(1.08);
+            filter: grayscale(0%) contrast(1.1);
+        }
+
+        .project-info h3 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .project-role {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .project-description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .project-details {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Photography Gallery */
+        .photography {
+            background: var(--bg-secondary);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 4/5;
+            background: var(--bg-primary);
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.6s ease-out;
+        }
+
+        .photo-item.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .photo-item::before {
+            content: 'FOTOGRAFIA';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 0.3em;
+            color: var(--text-secondary);
+            opacity: 0.2;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(40%) contrast(1.1);
+            transition: all 0.5s ease;
+        }
+
+        .photo-item:hover img {
+            transform: scale(1.1);
+            filter: grayscale(0%) contrast(1.15);
+        }
+
+        .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.95), transparent);
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .photo-item:hover .photo-caption {
+            transform: translateY(0);
+        }
+
+        .photo-caption h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .photo-caption p {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-content {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .contact h2 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        .contact-info {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 2;
+        }
+
+        .contact-info a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            color: var(--accent-soft);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .social-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border: 1px solid var(--text-secondary);
+            transition: all 0.3s ease;
+            letter-spacing: 0.1em;
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-primary);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+
+            .about-grid,
+            .project {
+                grid-template-columns: 1fr !important;
+                gap: 3rem;
+            }
+
+            .project:nth-child(even) .project-image {
+                order: 0;
+            }
+
+            .photo-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+
+            section {
+                padding: 5rem 5%;
+            }
+        }
+
+        /* Intersection Observer Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>
+                Mariana
+                <span class="accent">Nagata</span>
+            </h1>
+            <p class="hero-subtitle">Cinema • Fotografia • Produção</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+        <h2 class="section-title">Sobre Mim</h2>
+        <div class="about-grid">
+            <div class="about-image-container">
+                <img src="imagens/eu.jpg" alt="Seu Nome" class="about-image">
+            </div>
+            <div class="about-text fade-in">
+                <h2>Contando histórias através das lentes</h2>
+                <p>
+                    Embalos melhor filme da ufpa século 21.
+                </p>
+                <p>
+                    Mencione sua formação, experiências relevantes, e o que faz seu olhar
+                    cinematográfico único. Seja pessoal, mas mantenha o foco no que você
+                    oferece como profissional.
+                </p>
+                <div class="skills-list">
+                    <span class="skill-tag">Direção</span>
+                    <span class="skill-tag">Fotografia</span>
+                    <span class="skill-tag">Operação de Câmera</span>
+                    <span class="skill-tag">Continuidade</span>
+                    <span class="skill-tag">Assistente de Direção</span>
+                    <span class="skill-tag">Edição</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Film Projects Section -->
+    <section class="work-section">
+        <h2 class="section-title">Produções Cinematográficas</h2>
+        <div class="work-grid">
+            <!-- Projeto 1 -->
+            <div class="project">
+                <div class="project-image">
+                    <img src="imagens/embalos.png" alt="Nome do Projeto">
+                </div>
+                <div class="project-info">
+                    <h3>Nome do Projeto 1</h3>
+                    <p class="project-role">Diretora</p>
+                    <p class="project-description">
+                        Descreva brevemente o projeto, sua sinopse, o conceito visual,
+                        e seu papel criativo. O que tornou este projeto especial?
+                    </p>
+                    <div class="project-details">
+                        <div>Formato: Curta-metragem</div>
+                        <div>Ano: 2024</div>
+                        <div>Duração: 15 minutos</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projeto 2 -->
+            <div class="project">
+                <div class="project-image">
+                    <img src="imagens/AD.png" alt="Nome do Projeto">
+                </div>
+                <div class="project-info">
+                    <h3>Nome do Projeto 2</h3>
+                    <p class="project-role">Diretora de Fotografia</p>
+                    <p class="project-description">
+                        Descreva a direção visual do projeto, as escolhas de iluminação,
+                        paleta de cores e como você contribuiu para a narrativa através da imagem.
+                    </p>
+                    <div class="project-details">
+                        <div>Formato: Videoclipe</div>
+                        <div>Ano: 2024</div>
+                        <div>Equipamento: RED Komodo</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projeto 3 -->
+            <div class="project">
+                <div class="project-image">
+                    <img src="imagens/cirio.png" alt="Nome do Projeto">
+                </div>
+                <div class="project-info">
+                    <h3>Nome do Projeto 3</h3>
+                    <p class="project-role">Continuísta</p>
+                    <p class="project-description">
+                        Explique sua experiência neste projeto, os desafios enfrentados
+                        e como sua atenção aos detalhes contribuiu para a qualidade final.
+                    </p>
+                    <div class="project-details">
+                        <div>Formato: Longa-metragem</div>
+                        <div>Ano: 2023</div>
+                        <div>Produtora: Nome da Produtora</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adicione mais projetos seguindo a mesma estrutura -->
+        </div>
+    </section>
+
+    <!-- Photography Section -->
+    <section class="photography">
+        <h2 class="section-title">Fotografia</h2>
+        <div class="photo-grid">
+            <!-- Foto 1 -->
+            <div class="photo-item">
+                <!-- Insira imagem: <img src="foto1.jpg" alt="Descrição"> -->
+                <div class="photo-caption">
+                    <h4>Título da Foto</h4>
+                    <p>Still de Set • 2024</p>
+                </div>
+            </div>
+
+            <!-- Foto 2 -->
+            <div class="photo-item">
+                <!-- Insira imagem: <img src="foto2.jpg" alt="Descrição"> -->
+                <div class="photo-caption">
+                    <h4>Título da Foto</h4>
+                    <p>Retrato • 2024</p>
+                </div>
+            </div>
+
+            <!-- Foto 3 -->
+            <div class="photo-item">
+                <!-- Insira imagem: <img src="foto3.jpg" alt="Descrição"> -->
+                <div class="photo-caption">
+                    <h4>Título da Foto</h4>
+                    <p>Making Of • 2023</p>
+                </div>
+            </div>
+
+            <!-- Foto 4 -->
+            <div class="photo-item">
+                <!-- Insira imagem: <img src="foto4.jpg" alt="Descrição"> -->
+                <div class="photo-caption">
+                    <h4>Título da Foto</h4>
+                    <p>Fotografia Autoral • 2024</p>
+                </div>
+            </div>
+
+            <!-- Foto 5 -->
+            <div class="photo-item">
+                <!-- Insira imagem: <img src="foto5.jpg" alt="Descrição"> -->
+                <div class="photo-caption">
+                    <h4>Título da Foto</h4>
+                    <p>Ensaio Pessoal • 2024</p>
+                </div>
+            </div>
+
+            <!-- Foto 6 -->
+            <div class="photo-item">
+                <!-- Insira imagem: <img src="foto6.jpg" alt="Descrição"> -->
+                <div class="photo-caption">
+                    <h4>Título da Foto</h4>
+                    <p>Still de Set • 2023</p>
+                </div>
+            </div>
+
+            <!-- Adicione mais fotos seguindo a mesma estrutura -->
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <div class="contact-content fade-in">
+            <h2>Vamos criar juntos?</h2>
+            <div class="contact-info">
+                <div>seuemail@exemplo.com</div>
+                <div>(00) 00000-0000</div>
+                <div>Sua Cidade, Estado</div>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-link">Instagram</a>
+                <a href="#" class="social-link">Vimeo</a>
+                <a href="#" class="social-link">LinkedIn</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with fade-in class
+        document.querySelectorAll('.fade-in, .project, .photo-item, .section-title').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect on scroll (subtle)
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.hero-content');
+            parallaxElements.forEach(el => {
+                el.style.transform = `translateY(${scrolled * 0.3}px)`;
+            });
+        });
+    </script>
+</body>
+
+</html>
