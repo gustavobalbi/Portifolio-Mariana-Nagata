@@ -320,25 +320,11 @@
 
         .project-image {
             position: relative;
-            aspect-ratio: 16/10;
-            background: var(--bg-secondary);
+            aspect-ratio: 4/3;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .project-image::before {
-            content: 'INSIRA IMAGEM DO PROJETO';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: 'Space Mono', monospace;
-            font-size: 1rem;
-            letter-spacing: 0.2em;
-            color: var(--text-secondary);
-            opacity: 0.2;
-            text-align: center;
-        }
 
         .project-image img {
             width: 100%;
@@ -381,6 +367,34 @@
             font-size: 0.85rem;
             color: var(--text-secondary);
             line-height: 1.8;
+        }
+
+        .d-flex {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .project-link {
+            display: inline-block;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            text-decoration: none;
+            padding: 0.6rem 1.5rem;
+            border: 1px solid var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+            transform: translateY(-2px);
         }
 
         /* Photography Gallery */
@@ -588,12 +602,14 @@
             <div class="about-text fade-in">
                 <h2>Contando histórias através das lentes</h2>
                 <p>
-                    Embalos melhor filme da ufpa século 21.
+                    Olá! Sou Mariana Nagata
+                    e curso 6º semestre da faculdade de Cinema da Universidade Federal do Pará.
                 </p>
                 <p>
-                    Mencione sua formação, experiências relevantes, e o que faz seu olhar
-                    cinematográfico único. Seja pessoal, mas mantenha o foco no que você
-                    oferece como profissional.
+                    Minha trajetória profissional começou em 2023 quando passei a liderar a direção criativa e
+                    atuar na fotografia dos mais variados projetos audiovisuais, como curta-metragens, séries de ficção
+                    e videoclipes. Possuo, também, experiência na cobertura foto e videográfica de eventos científicos,
+                    socias e esportivos, além de realizar a edição desses materiais.
                 </p>
                 <div class="skills-list">
                     <span class="skill-tag">Direção</span>
@@ -609,7 +625,7 @@
 
     <!-- Film Projects Section -->
     <section class="work-section">
-        <h2 class="section-title">Produções Cinematográficas</h2>
+        <h2 class="section-title">Audiovisual</h2>
         <div class="work-grid">
             <!-- Projeto 1 -->
             <div class="project">
@@ -617,16 +633,29 @@
                     <img src="imagens/embalos.png" alt="Nome do Projeto">
                 </div>
                 <div class="project-info">
-                    <h3>Nome do Projeto 1</h3>
-                    <p class="project-role">Diretora</p>
+                    <h3>Nos Embalos da Madrugada</h3>
+                    <p class="project-role">Diretora e Roteirista</p>
                     <p class="project-description">
-                        Descreva brevemente o projeto, sua sinopse, o conceito visual,
-                        e seu papel criativo. O que tornou este projeto especial?
+                        "Nos Embalos da Madrugada" é uma obra cinematográfica que mergulha na estética urbana e na
+                        eloquência da juventude paraense, capturando a pulsação cultural contemporânea da região.
+                        <br><br>
+                        <strong>Sinopse:</strong> Quatro amigos fogem de uma festa de ano novo e decidem ir a Mosqueiro
+                        para ver o primeiro nascer do sol do ano.
+                        Enquanto tentam permanecer lúcidos o trajeto todo, eles passam por situações adversas que testam
+                        sua amizade e sua capacidade de contorná-las.
+                        <br><br>
+                        O curta-metragem foi eleita a Melhor Produção da UFPA no Século XXI, via votação popular.
                     </p>
-                    <div class="project-details">
-                        <div>Formato: Curta-metragem</div>
-                        <div>Ano: 2024</div>
-                        <div>Duração: 15 minutos</div>
+                    <div class="d-flex">
+                        <div class="project-details">
+                            <div>Direção: Mariana Nagata</div>
+                            <div>Formato: Curta-metragem</div>
+                            <div>Ano: 2025</div>
+                        </div>
+                        <div>
+                            <a href="https://www.youtube.com/watch?v=bG5GYhgPWSs" target="_blank"
+                                class="project-link">Assistir</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -637,16 +666,23 @@
                     <img src="imagens/AD.png" alt="Nome do Projeto">
                 </div>
                 <div class="project-info">
-                    <h3>Nome do Projeto 2</h3>
-                    <p class="project-role">Diretora de Fotografia</p>
+                    <h3>Menino do Açaí</h3>
+                    <p class="project-role">1° Assistente de Direção</p>
                     <p class="project-description">
-                        Descreva a direção visual do projeto, as escolhas de iluminação,
-                        paleta de cores e como você contribuiu para a narrativa através da imagem.
+                        "Nos Embalos da Madrugada" é uma obra cinematográfica que mergulha na estética urbana e na
+                        eloquência da juventude paraense, capturando a pulsação cultural contemporânea da região.
+                        <br><br>
+                        <strong>Sinopse:</strong> Quatro amigos fogem de uma festa de ano novo e decidem ir a Mosqueiro
+                        para ver o primeiro nascer do sol do ano.
+                        Enquanto tentam permanecer lúcidos o trajeto todo, eles passam por situações adversas que testam
+                        sua amizade e sua capacidade de contorná-las.
+                        <br><br>
+                        O curta-metragem foi eleita a Melhor Produção da UFPA no Século XXI, via votação popular.
                     </p>
                     <div class="project-details">
-                        <div>Formato: Videoclipe</div>
-                        <div>Ano: 2024</div>
-                        <div>Equipamento: RED Komodo</div>
+                        <div>Direção: Rauni Barros</div>
+                        <div>Formato: Curta-metragem</div>
+                        <div>Ano: 2026</div>
                     </div>
                 </div>
             </div>
@@ -654,24 +690,151 @@
             <!-- Projeto 3 -->
             <div class="project">
                 <div class="project-image">
-                    <img src="imagens/cirio.png" alt="Nome do Projeto">
+                    <img src="imagens/fio.jpg" alt="Nome do Projeto">
                 </div>
                 <div class="project-info">
-                    <h3>Nome do Projeto 3</h3>
+                    <h3>O Fio Que Nos Conecta</h3>
                     <p class="project-role">Continuísta</p>
                     <p class="project-description">
-                        Explique sua experiência neste projeto, os desafios enfrentados
-                        e como sua atenção aos detalhes contribuiu para a qualidade fina.
+                        O curta acompanha Bruno, um garoto curioso que se encanta com a chegada de Ana, filha do casal
+                        recém-chegado ao bairro.
+                        No entanto, o pai rígido da menina impede a amizade entre os dois.
+                        Determinado, Bruno encontra no “Telefone sem Fio” uma maneira de conversar secretamente com Ana.
+                        Aos poucos, ela compartilha suas angústias e os medos que sente em casa.
+                        Ao perceber a gravidade da situação, Bruno tenta buscar ajuda para a amiga, mas ninguém acredita
+                        nele.
                     </p>
                     <div class="project-details">
-                        <div>Formato: Longa-metragem</div>
-                        <div>Ano: 2023</div>
-                        <div>Produtora: Nome da Produtora</div>
+                        <div>Direção: Kevin Castro</div>
+                        <div>Formato: Curta-metragem</div>
+                        <div>Ano: 2025</div>
                     </div>
                 </div>
             </div>
 
             <!-- Adicione mais projetos seguindo a mesma estrutura -->
+            <div class="project">
+                <div class="project-image">
+                    <img src="imagens/desculpanaodizer.jpg" alt="Nome do Projeto">
+                </div>
+                <div class="project-info">
+                    <h3>Desculpa Não Dizer Que Te Amo!</h3>
+                    <p class="project-role">Microfonista</p>
+                    <p class="project-description">
+                        Rosa e Maria têm uma relação cheia de desafios, mas também de coragem e cuidado.
+                        Um filme sobre laços familiares, sacrifícios e a união de duas gerações de mulheres negras.
+                    </p>
+                    <div class="project-details">
+                        <div>Direção: Beatriz Balby</div>
+                        <div>Formato: Curta-metragem</div>
+                        <div>Ano: 2025</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project">
+                <div class="project-image">
+                    <img src="imagens/desculpanaodizer.jpg" alt="Nome do Projeto">
+                </div>
+                <div class="project-info">
+                    <h3>Máscara</h3>
+                    <p class="project-role">Diretora e Roteirista</p>
+                    <p class="project-description">
+                        "Nos Embalos da Madrugada" é uma obra cinematográfica que mergulha na estética urbana e na
+                        eloquência da juventude paraense, capturando a pulsação cultural contemporânea da região.
+                        <br><br>
+                        <strong>Sinopse:</strong> Quatro amigos fogem de uma festa de ano novo e decidem ir a Mosqueiro
+                        para ver o primeiro nascer do sol do ano.
+                        Enquanto tentam permanecer lúcidos o trajeto todo, eles passam por situações adversas que testam
+                        sua amizade e sua capacidade de contorná-las.
+                        <br><br>
+                        O curta-metragem foi eleita a Melhor Produção da UFPA no Século XXI, via votação popular.
+                    </p>
+                    <div class="project-details">
+                        <div>Direção: Mariana Nagata</div>
+                        <div>Formato: Documentário</div>
+                        <div>Ano: 2025</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project">
+                <div class="project-image">
+                    <img src="imagens/matriarcas.jpg" alt="Nome do Projeto">
+                </div>
+                <div class="project-info">
+                    <h3>Matriarcas da Amazônia</h3>
+                    <p class="project-role">Assistente de Continuidade</p>
+                    <p class="project-description">
+                        Uma série que nasce da dor… e renasce na força das mulheres amazônidas.
+
+                        Matriarcas da Amazônia é uma série fictícia feita no coração da floresta, onde memória, justiça
+                        e encantaria se entrelaçam.
+
+                        Cinco mulheres. Uma força ancestral. Uma história contada por quem carrega as marcas e os
+                        encantos da Amazônia.
+                    </p>
+                    <div class="project-details">
+                        <div>Direção: Joyce Cursino</div>
+                        <div>Formato: Série</div>
+                        <div>Ano: 2025</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project">
+                <div class="project-image">
+                    <img src="imagens/rockdoido.jpg" alt="Nome do Projeto">
+                </div>
+                <div class="project-info">
+                    <h3>ROCK DOIDO - O FILME</h3>
+                    <p class="project-role">3° Assistente de Direção</p>
+                    <p class="project-description">
+                        Em um plano sequência arrebatador de aproximadamente 25 minutos, inteiramente gravado com um
+                        aparelho celular.
+                        O cenário escolhido não poderia ser mais simbólico: a periferia de Belém do Pará, no histórico
+                        Bairro da Condor,
+                        que se tornou palco de poesia, resistência e verdade. Cada imagem carrega o suor, a coragem e a
+                        sensibilidade
+                        de uma equipe que fez do impossível um gesto de arte e do cotidiano um ato de eternidade.
+                    </p>
+                    <div class='d-flex'>
+                        <div class="project-details">
+                            <div>Direção: Guilherme Takshy, Naré e Gaby Amarantos</div>
+                            <div>Formato: Videoclipe</div>
+                            <div>Ano: 2025</div>
+                        </div>
+                        <div>
+                            <a href="https://www.youtube.com/watch?v=g-SIWltur3A" target="blank"
+                                class="project-link">Assistir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project">
+                <div class="project-image">
+                    <img src="imagens/rockdoido.jpg" alt="Nome do Projeto">
+                </div>
+                <div class="project-info">
+                    <h3>Manual do Mundo x Sebrae</h3>
+                    <p class="project-role">Assistente de Câmera</p>
+                    <p class="project-description">
+                        Em um plano sequência arrebatador de aproximadamente 25 minutos, inteiramente gravado com um
+                        aparelho celular.
+                        O cenário escolhido não poderia ser mais simbólico: a periferia de Belém do Pará, no histórico
+                        Bairro da Condor,
+                        que se tornou palco de poesia, resistência e verdade. Cada imagem carrega o suor, a coragem e a
+                        sensibilidade
+                        de uma equipe que fez do impossível um gesto de arte e do cotidiano um ato de eternidade.
+                    </p>
+                    <div class="project-details">
+                        <div>Direção: Iberê Thenório | Produção local (Belém/PA): Victor Estácio</div>
+                        <div>Formato: Reels (Instagram)</div>
+                        <div>Ano: 2025</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
