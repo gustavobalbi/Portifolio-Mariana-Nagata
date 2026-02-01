@@ -16,13 +16,13 @@
         }
 
         :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #1a1a1a;
-            --text-primary: #f5f5f5;
-            --text-secondary: #a0a0a0;
-            --accent: #ff3366;
-            --accent-soft: #ff6b8a;
-            --grain-opacity: 0.03;
+            --bg-primary: #fbf9f4;
+            --bg-secondary: #ddc096;
+            --text-primary: #1c1815;
+            --text-secondary: #5c554f;
+            --accent: #d66417;
+            --accent-soft: #cca529;
+            --grain-opacity: 0;
         }
 
         body {
@@ -45,7 +45,7 @@
             opacity: var(--grain-opacity);
             pointer-events: none;
             z-index: 9999;
-            animation: grain 8s steps(10) infinite;
+            display: none;
         }
 
         @keyframes grain {
@@ -211,7 +211,7 @@
             aspect-ratio: 3/4;
             background: var(--bg-secondary);
             overflow: hidden;
-            border: 1px solid rgba(255, 51, 102, 0.2);
+            border: 1px solid rgba(230, 110, 25, 0.2);
         }
 
         .about-image-container::before {
@@ -270,7 +270,7 @@
             font-family: 'Space Mono', monospace;
             font-size: 0.85rem;
             padding: 0.6rem 1.2rem;
-            background: rgba(255, 51, 102, 0.1);
+            background: #fbf9f4;
             border: 1px solid var(--accent);
             color: var(--accent-soft);
             letter-spacing: 0.1em;
@@ -322,7 +322,7 @@
             position: relative;
             aspect-ratio: 4/3;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
 
@@ -393,7 +393,7 @@
         .project-link:hover {
             background: var(--accent);
             color: var(--bg-primary);
-            box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+            box-shadow: 0 0 20px rgba(230, 110, 25, 0.3);
             transform: translateY(-2px);
         }
 
@@ -416,7 +416,7 @@
             background: var(--bg-primary);
             overflow: hidden;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             opacity: 0;
             transform: scale(0.9);
             transition: all 0.6s ease-out;
@@ -577,6 +577,29 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        .site-footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: var(--bg-secondary);
+            margin-top: -1px;
+            /* Avoid gap */
+        }
+
+        .developer-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .developer-link:hover {
+            color: var(--accent);
+            opacity: 1;
+        }
     </style>
 </head>
 
@@ -597,7 +620,7 @@
         <h2 class="section-title">Sobre Mim</h2>
         <div class="about-grid">
             <div class="about-image-container">
-                <img src="imagens/eu.jpg" alt="Seu Nome" class="about-image">
+                <img src="imagens/eu-cv.jpg" alt="Seu Nome" class="about-image">
             </div>
             <div class="about-text fade-in">
                 <h2>Contando histórias através das lentes</h2>
@@ -898,16 +921,19 @@
 
             <!-- Adicione mais fotos seguindo a mesma estrutura -->
         </div>
+
+
+
     </section>
 
     <!-- Contact Section -->
     <section class="contact">
         <div class="contact-content fade-in">
-            <h2>Vamos criar juntos?</h2>
+            <h2>Contatos</h2>
             <div class="contact-info">
                 <div>seuemail@exemplo.com</div>
                 <div>(00) 00000-0000</div>
-                <div>Sua Cidade, Estado</div>
+                <div>Belém, Pará</div>
             </div>
             <div class="social-links">
                 <a href="#" class="social-link">Instagram</a>
@@ -915,7 +941,16 @@
                 <a href="#" class="social-link">LinkedIn</a>
             </div>
         </div>
+
     </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <a href="https://www.instagram.com/_gustavobalbi/" target="_blank" class="developer-link">Desenvolvido por
+            Gustavo Balbi Queiroz</a>
+    </footer>
+
+
 
     <script>
         // Intersection Observer for fade-in animations
@@ -960,6 +995,9 @@
             });
         });
     </script>
+
+
 </body>
+
 
 </html>
