@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfólio Cinematográfico</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
         rel="stylesheet">
     <style>
         * {
@@ -26,27 +26,103 @@
         }
 
         body {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Playfair Display', serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             overflow-x: hidden;
             line-height: 1.6;
+            position: relative;
         }
 
-        /* Film grain overlay */
-        body::before {
-            content: '';
+        /* Y2K Texture Overlay */
+        .texture-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: var(--grain-opacity);
+            z-index: -1;
             pointer-events: none;
-            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .noise {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.05;
             animation: grain 8s steps(10) infinite;
         }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(255, 51, 102, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 51, 102, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            top: 10%;
+            left: 20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            bottom: 20%;
+            right: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #5e17eb 0%, transparent 70%);
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            top: 40%;
+            left: 60%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #00f2ea 0%, transparent 70%);
+            animation-delay: -10s;
+            opacity: 0.2;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
 
         @keyframes grain {
 
@@ -195,7 +271,9 @@
 
         /* About Section */
         .about {
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.7) 0%, rgba(26, 26, 26, 0.7) 100%);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
         .about-grid {
@@ -253,10 +331,13 @@
         }
 
         .about-text p {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+            /* Slight adjustment for mono font readability */
             color: var(--text-secondary);
             margin-bottom: 1.5rem;
             line-height: 1.8;
+            letter-spacing: -0.02em;
         }
 
         .skills-list {
@@ -285,7 +366,7 @@
 
         /* Work Sections */
         .work-section {
-            background: var(--bg-primary);
+            background: transparent;
         }
 
         .work-grid {
@@ -356,10 +437,13 @@
         }
 
         .project-description {
-            font-size: 1.2rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.95rem;
+            /* Adjusted for mono font */
             color: var(--text-secondary);
             line-height: 1.8;
             margin-bottom: 2rem;
+            letter-spacing: -0.02em;
         }
 
         .project-details {
@@ -399,20 +483,92 @@
 
         /* Photography Gallery */
         .photography {
-            background: var(--bg-secondary);
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(8px);
         }
 
         .photo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
             max-width: 1600px;
             margin: 0 auto;
         }
 
+        /* Event Layout Styles */
+        .events-section {
+            background: transparent;
+            padding-bottom: 4rem;
+            /* Spacing between events and gallery */
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .event-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .event-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            filter: grayscale(20%);
+            transition: filter 0.3s ease;
+            display: block;
+        }
+
+        /* Hide image if src is empty or error (handled via JS usually, but for structure:) */
+        .event-card.no-image .event-content {
+            padding-top: 2rem;
+            border-top: 4px solid var(--accent);
+            /* Visual indicator for text-only events */
+        }
+
+        .event-card:hover .event-image {
+            filter: grayscale(0%);
+        }
+
+        .event-content {
+            padding: 1.5rem;
+        }
+
+        .event-date {
+            font-family: 'Space Mono', monospace;
+            color: var(--accent);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .event-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .event-description {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
         .photo-item {
             position: relative;
-            aspect-ratio: 4/5;
+            aspect-ratio: 16/10;
             background: var(--bg-primary);
             overflow: hidden;
             cursor: pointer;
@@ -459,7 +615,7 @@
             left: 0;
             right: 0;
             padding: 2rem;
-            background: linear-gradient(to top, rgba(10, 10, 10, 0.95), transparent);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.98) 10%, rgba(0, 0, 0, 0.6) 50%, transparent 100%);
             transform: translateY(100%);
             transition: transform 0.4s ease;
         }
@@ -468,9 +624,64 @@
             transform: translateY(0);
         }
 
+        /* Album Stack Effect */
+        .photo-item.album-effect {
+            overflow: visible;
+            background: transparent;
+            border: none;
+        }
+
+        .photo-item.album-effect::before,
+        .photo-item.album-effect::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: -1;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        .photo-item.album-effect::before {
+            transform: rotate(-3deg) scale(0.98);
+        }
+
+        .photo-item.album-effect::after {
+            transform: rotate(3deg) scale(0.98);
+        }
+
+        .photo-item.album-effect:hover::before {
+            transform: rotate(-6deg) scale(0.95) translateX(-5px);
+            background: rgba(255, 51, 102, 0.1);
+            border-color: rgba(255, 51, 102, 0.3);
+        }
+
+        .photo-item.album-effect:hover::after {
+            transform: rotate(6deg) scale(0.95) translateX(5px);
+            background: rgba(255, 51, 102, 0.1);
+            border-color: rgba(255, 51, 102, 0.3);
+        }
+
+        .photo-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg-primary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.4s ease;
+        }
+
+        .photo-item:hover .photo-content {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
         .photo-caption h4 {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
         }
 
         .photo-caption p {
@@ -478,11 +689,13 @@
             font-size: 0.75rem;
             color: var(--accent);
             letter-spacing: 0.1em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
         }
 
         /* Contact Section */
         .contact {
-            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            background: linear-gradient(180deg, rgba(10, 10, 10, 0.8) 0%, rgba(26, 26, 26, 0.8) 100%);
+            backdrop-filter: blur(5px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -552,6 +765,11 @@
                 gap: 3rem;
             }
 
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 columns on tablet */
+            }
+
             .project:nth-child(even) .project-image {
                 order: 0;
             }
@@ -577,10 +795,144 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        .site-footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: var(--bg-secondary);
+            margin-top: -1px;
+            /* Avoid gap */
+        }
+
+        .developer-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .developer-link:hover {
+            color: var(--accent);
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .main-nav {
+                top: 1rem;
+                width: 90%;
+                padding: 0.8rem 1.5rem;
+            }
+
+            .nav-list {
+                gap: 0;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .nav-link {
+                font-size: 0.65rem;
+                letter-spacing: 0.05em;
+            }
+        }
+
+        /* Navigation Menu Styles */
+        .main-nav {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            z-index: 1000;
+            padding: 1rem 3rem;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 100px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .main-nav.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: all;
+        }
+
+        .main-nav:hover {
+            background: rgba(10, 10, 10, 0.8);
+            border-color: rgba(255, 51, 102, 0.3);
+            transform: translateX(-50%) translateY(2px);
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-50%);
+            opacity: 0;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+            opacity: 1;
+        }
     </style>
+
 </head>
 
 <body>
+    <!-- Background Texture Elements -->
+    <div class="texture-overlay">
+        <div class="noise"></div>
+        <div class="grid-overlay"></div>
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <nav class="main-nav fade-in">
+        <ul class="nav-list">
+            <li><a href="#about" class="nav-link">Sobre Mim</a></li>
+            <li><a href="#audiovisual" class="nav-link">Audiovisual</a></li>
+            <li><a href="#events" class="nav-link">Eventos</a></li>
+            <li><a href="#gallery" class="nav-link">Galeria</a></li>
+            <li><a href="#contact" class="nav-link">Contato</a></li>
+        </ul>
+    </nav>
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
@@ -588,16 +940,16 @@
                 Mariana
                 <span class="accent">Nagata</span>
             </h1>
-            <p class="hero-subtitle">Cinema • Fotografia • Produção</p>
+            <p class="hero-subtitle"> Audiovisual • Cinema • Fotografia</p>
         </div>
     </section>
 
     <!-- About Section -->
-    <section class="about">
+    <section class="about" id="about">
         <h2 class="section-title">Sobre Mim</h2>
         <div class="about-grid">
             <div class="about-image-container">
-                <img src="imagens/eu.jpg" alt="Seu Nome" class="about-image">
+                <img src="imagens/eu-cv1.jpg" alt="Seu Nome" class="about-image">
             </div>
             <div class="about-text fade-in">
                 <h2>Contando histórias através das lentes</h2>
@@ -618,19 +970,21 @@
                     <span class="skill-tag">Continuidade</span>
                     <span class="skill-tag">Assistente de Direção</span>
                     <span class="skill-tag">Edição</span>
+                    <span class="skill-tag">Vídeos & Fotos</span>
+
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Film Projects Section -->
-    <section class="work-section">
+    <section class="work-section" id="audiovisual">
         <h2 class="section-title">Audiovisual</h2>
         <div class="work-grid">
             <!-- Projeto 1 -->
             <div class="project">
                 <div class="project-image">
-                    <img src="imagens/embalos.png" alt="Nome do Projeto">
+                    <img src="imagens/audiovisual/embalos.png" alt="Nome do Projeto">
                 </div>
                 <div class="project-info">
                     <h3>Nos Embalos da Madrugada</h3>
@@ -663,7 +1017,7 @@
             <!-- Projeto 2 -->
             <div class="project">
                 <div class="project-image">
-                    <img src="imagens/AD.png" alt="Nome do Projeto">
+                    <img src="imagens/audiovisual/AD.png" alt="Nome do Projeto">
                 </div>
                 <div class="project-info">
                     <h3>Menino do Açaí</h3>
@@ -690,7 +1044,7 @@
             <!-- Projeto 3 -->
             <div class="project">
                 <div class="project-image">
-                    <img src="imagens/fio.jpg" alt="Nome do Projeto">
+                    <img src="imagens/audiovisual/fio.jpg" alt="Nome do Projeto">
                 </div>
                 <div class="project-info">
                     <h3>O Fio Que Nos Conecta</h3>
@@ -715,7 +1069,7 @@
             <!-- Adicione mais projetos seguindo a mesma estrutura -->
             <div class="project">
                 <div class="project-image">
-                    <img src="imagens/desculpanaodizer.jpg" alt="Nome do Projeto">
+                    <img src="imagens/audiovisual/desculpanaodizer.jpg" alt="Nome do Projeto">
                 </div>
                 <div class="project-info">
                     <h3>Desculpa Não Dizer Que Te Amo!</h3>
@@ -734,7 +1088,7 @@
 
             <div class="project">
                 <div class="project-image">
-                    <img src="imagens/desculpanaodizer.jpg" alt="Nome do Projeto">
+                    <img src="imagens/audiovisual/desculpanaodizer.jpg" alt="Nome do Projeto">
                 </div>
                 <div class="project-info">
                     <h3>Máscara</h3>
@@ -760,7 +1114,7 @@
 
             <div class="project">
                 <div class="project-image">
-                    <img src="imagens/matriarcas.jpg" alt="Nome do Projeto">
+                    <img src="imagens/audiovisual/matriarcas.jpg" alt="Nome do Projeto">
                 </div>
                 <div class="project-info">
                     <h3>Matriarcas da Amazônia</h3>
@@ -784,7 +1138,7 @@
 
             <div class="project">
                 <div class="project-image">
-                    <img src="imagens/rockdoido.jpg" alt="Nome do Projeto">
+                    <img src="imagens/audiovisual/rockdoido.jpg" alt="Nome do Projeto">
                 </div>
                 <div class="project-info">
                     <h3>ROCK DOIDO - O FILME</h3>
@@ -814,7 +1168,7 @@
 
             <div class="project">
                 <div class="project-image">
-                    <img src="imagens/rockdoido.jpg" alt="Nome do Projeto">
+                    <img src="imagens/audiovisual/rockdoido.jpg" alt="Nome do Projeto">
                 </div>
                 <div class="project-info">
                     <h3>Manual do Mundo x Sebrae</h3>
@@ -838,84 +1192,131 @@
         </div>
     </section>
 
-    <!-- Photography Section -->
-    <section class="photography">
-        <h2 class="section-title">Fotografia</h2>
+    <!-- Events Section -->
+    <section class="events-section" id="events">
+        <h2 class="section-title">Eventos</h2>
+        <div class="events-grid">
+            <!-- Event 1 (Generic/Scalable) -->
+            <div class="event-card fade-in">
+                <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?auto=format&fit=crop&q=80"
+                    alt="Evento Cinema" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">10 SET 2024</span>
+                    <h3 class="event-title">Festival de Cinema da Amazônia</h3>
+                    <p class="event-description">Cobertura completa e exibição de curtas-metragens regionais, celebrando
+                        a cultura local.</p>
+                </div>
+            </div>
+
+            <!-- Event 2 -->
+            <div class="event-card fade-in">
+                <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80"
+                    alt="Workshop" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">22 OUT 2024</span>
+                    <h3 class="event-title">Workshop de Direção de Fotografia</h3>
+                    <p class="event-description">Ministrado para estudantes da UFPA, focando em iluminação prática e
+                        composição.</p>
+                </div>
+            </div>
+
+            <!-- Event 3 -->
+            <div class="event-card fade-in">
+                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80"
+                    alt="Exposição" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">05 NOV 2024</span>
+                    <h3 class="event-title">Exposição: Olhares do Norte</h3>
+                    <p class="event-description">Mostra fotográfica coletiva evidenciando a diversidade urbana de Belém.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Event 4 (No Image) -->
+            <div class="event-card no-image fade-in">
+                <div class="event-content">
+                    <span class="event-date">15 DEZ 2024</span>
+                    <h3 class="event-title">Roda de Conversa: Cinema Independente</h3>
+                    <p class="event-description">Debate aberto sobre os desafios e oportunidades da produção audiovisual
+                        na região norte.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="photography" id="gallery">
+        <h2 class="section-title">Galeria</h2>
         <div class="photo-grid">
             <!-- Foto 1 -->
-            <div class="photo-item">
-                <!-- Insira imagem: <img src="foto1.jpg" alt="Descrição"> -->
-                <div class="photo-caption">
-                    <h4>Título da Foto</h4>
-                    <p>Still de Set • 2024</p>
+            <div class="photo-item album-effect">
+                <div class="photo-content">
+                    <img src="imagens/eventos/livro.jpg" alt="Descrição">
+                    <div class="photo-caption">
+                        <h4>Lançamento de livro para Giu Yukari Murakami</h4>
+                        <p>Cobertura • 2024</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Foto 2 -->
-            <div class="photo-item">
-                <!-- Insira imagem: <img src="foto2.jpg" alt="Descrição"> -->
-                <div class="photo-caption">
-                    <h4>Título da Foto</h4>
-                    <p>Retrato • 2024</p>
+            <div class="photo-item album-effect">
+                <div class="photo-content">
+                    <img src="imagens/eventos/volei.jpeg" alt="Descrição">
+                    <div class="photo-caption">
+                        <h4>Torneio Nikkei de Vôlei</h4>
+                        <p>Fotografia • 2025</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Foto 3 -->
-            <div class="photo-item">
-                <!-- Insira imagem: <img src="foto3.jpg" alt="Descrição"> -->
-                <div class="photo-caption">
-                    <h4>Título da Foto</h4>
-                    <p>Making Of • 2023</p>
+            <div class="photo-item album-effect">
+                <div class="photo-content">
+                    <img src="imagens/eventos/matsuri.jpeg" alt="Descrição">
+                    <div class="photo-caption">
+                        <h4>Amazônia Matsuri</h4>
+                        <p>Fotografia • 2024</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Foto 4 -->
-            <div class="photo-item">
-                <!-- Insira imagem: <img src="foto4.jpg" alt="Descrição"> -->
-                <div class="photo-caption">
-                    <h4>Título da Foto</h4>
-                    <p>Fotografia Autoral • 2024</p>
+            <!-- Foto 4 (Reusing structure for grid of 4) -->
+            <div class="photo-item album-effect">
+                <div class="photo-content">
+                    <img src="imagens/eventos/livro.jpg" alt="Descrição">
+                    <div class="photo-caption">
+                        <h4>Simpósio NPT</h4>
+                        <p>Cobertura • 2025</p>
+                    </div>
                 </div>
             </div>
-
-            <!-- Foto 5 -->
-            <div class="photo-item">
-                <!-- Insira imagem: <img src="foto5.jpg" alt="Descrição"> -->
-                <div class="photo-caption">
-                    <h4>Título da Foto</h4>
-                    <p>Ensaio Pessoal • 2024</p>
-                </div>
-            </div>
-
-            <!-- Foto 6 -->
-            <div class="photo-item">
-                <!-- Insira imagem: <img src="foto6.jpg" alt="Descrição"> -->
-                <div class="photo-caption">
-                    <h4>Título da Foto</h4>
-                    <p>Still de Set • 2023</p>
-                </div>
-            </div>
-
-            <!-- Adicione mais fotos seguindo a mesma estrutura -->
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section class="contact">
+    <section class="contact" id="contact">
         <div class="contact-content fade-in">
             <h2>Vamos criar juntos?</h2>
             <div class="contact-info">
-                <div>seuemail@exemplo.com</div>
-                <div>(00) 00000-0000</div>
-                <div>Sua Cidade, Estado</div>
+                <div>nagata.my@gmail.com</div>
+                <div>(91)98590-7881</div>
+                <div>Belém, Pará</div>
             </div>
             <div class="social-links">
-                <a href="#" class="social-link">Instagram</a>
-                <a href="#" class="social-link">Vimeo</a>
-                <a href="#" class="social-link">LinkedIn</a>
+                <a href="https://www.instagram.com/mari.nagata_/" target="blank" class="social-link">Instagram</a>
+                <a href="#" class="social-link">Lattes</a>
+                <a href="https://www.linkedin.com/in/mariana-nagata-6970612a3/" target="blank"
+                    class="social-link">LinkedIn</a>
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <a href="https://www.instagram.com/_gustavobalbi/" target="_blank" class="developer-link">Desenvolvido por
+            Gustavo Balbi Queiroz</a>
+    </footer>
 
     <script>
         // Intersection Observer for fade-in animations
@@ -959,6 +1360,23 @@
                 el.style.transform = `translateY(${scrolled * 0.3}px)`;
             });
         });
+
+        // Navigation visibility observer
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const nav = document.querySelector('.main-nav');
+                if (!entry.isIntersecting) {
+                    nav.classList.add('visible');
+                } else {
+                    nav.classList.remove('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const heroSection = document.querySelector('.hero');
+        if (heroSection) {
+            navObserver.observe(heroSection);
+        }
     </script>
 </body>
 
