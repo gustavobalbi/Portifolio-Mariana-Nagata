@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria - Mariana Nagata</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- JSZip and FileSaver removed -->
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a0a0a0;
+            --accent: #ff3366;
+            --accent-soft: #ff6b8a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Reusing consistent header/nav style */
+        .top-bar {
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .back-btn {
+            font-family: 'Space Mono', monospace;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: transparent;
+            border: 1px solid var(--accent);
+            padding: 0.5rem 1.2rem;
+        }
+
+        .back-btn:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .gallery-header {
+            padding: 4rem 5% 2rem;
+            text-align: center;
+        }
+
+        .gallery-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .gallery-meta {
+            font-family: 'Space Mono', monospace;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .action-btn.primary {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        .action-btn.primary:hover {
+            background: transparent;
+            color: var(--accent);
+        }
+
+        /* Gallery Grid */
+        .gallery-container {
+            padding: 2rem 5% 5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 3/2;
+            background: var(--bg-secondary);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(0.7);
+        }
+
+        .item-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .gallery-item:hover .item-overlay {
+            opacity: 1;
+        }
+
+        .download-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.2s;
+            text-decoration: none;
+        }
+
+        .download-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .loading-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem;
+            font-family: 'Space Mono', monospace;
+            color: var(--text-secondary);
+        }
+
+        /* Modal for full view */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox img {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        .lightbox-download {
+            margin-top: 1.5rem;
+            background: transparent;
+            color: var(--text-primary);
+            padding: 0.8rem 2rem;
+            border: 1px solid var(--accent);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lightbox-download:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+            padding: 1rem;
+            /* larger tap area */
+        }
+
+        /* Image Protection Styles */
+        img {
+            -webkit-user-drag: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        /* Invisible protection layer logic applied to gallery-item */
+        .gallery-item::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            /* Sits above image */
+        }
+
+        .gallery-item:hover .item-overlay {
+            z-index: 3;
+            /* Overlay needs to be above protection layer */
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .gallery-header {
+                padding: 3rem 1.5rem 1rem;
+            }
+
+            .gallery-title {
+                font-size: 2rem;
+            }
+
+            .gallery-container {
+                padding: 1rem 1rem 4rem;
+                grid-template-columns: repeat(2, 1fr);
+                /* Force 2 cols on mobile */
+                gap: 0.8rem;
+            }
+
+            /* For very small screens, maybe 1 col? keeping 2 is standard for Instagram-like feel */
+
+            .gallery-item {
+                border-width: 0.5px;
+            }
+
+            .lightbox img {
+                max-width: 95%;
+                max-height: 70vh;
+            }
+
+            .lightbox-download {
+                width: 90%;
+                justify-content: center;
+                font-size: 0.8rem;
+            }
+
+            .close-lightbox {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .gallery-container {
+                grid-template-columns: 1fr;
+                /* Single column for very narrow devices */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="top-bar">
+        <a href="index.html#gallery" class="back-btn">← Voltar</a>
+        <div style="font-family: 'Space Mono'; font-weight: bold; color: var(--accent);">MARIANA NAGATA</div>
+    </nav>
+
+    <header class="gallery-header">
+        <h1 class="gallery-title">Lançamento: Giu Yukari Murakami</h1>
+        <div class="gallery-meta">Cobertura • 2024 • <span id="photo-count">Carregando...</span></div>
+
+        <div class="actions">
+            <!-- Download options removed -->
+        </div>
+    </header>
+
+    <div class="gallery-container" id="minha-galeria">
+        <div class="loading-state">
+            <p>Carregando imagens do servidor...</p>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <span class="close-lightbox">&times;</span>
+        <img id="lightbox-img" src="" alt="" referrerpolicy="no-referrer" crossorigin="anonymous"
+            oncontextmenu="return false;">
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwW9bozMP1wxp83gHWAPCP2bjXYtBySjlu3TmJ_r30FwxkaKHi7J_iP5eIyEnjQW-tp/exec';
+        let loadedImages = [];
+
+        // Helper to optimize Google Drive URLs
+        function getOptimizedUrl(originalUrl) {
+            try {
+                const idMatch = originalUrl.match(/id=([a-zA-Z0-9_-]+)/);
+                if (idMatch && idMatch[1]) {
+                    return {
+                        display: `https://lh3.googleusercontent.com/d/${idMatch[1]}`,
+                        download: `https://drive.google.com/uc?export=download&id=${idMatch[1]}`
+                    };
+                }
+            } catch (e) {
+                console.warn('URL parsing failed', e);
+            }
+            return { display: originalUrl, download: originalUrl };
+        }
+
+        async function carregarGaleria() {
+            try {
+                // Parse URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const galleryTitle = urlParams.get('title');
+                const folderId = urlParams.get('id');
+
+                // Update UI based on params
+                if (galleryTitle) {
+                    document.querySelector('.gallery-title').innerText = galleryTitle;
+                    document.title = `${galleryTitle} - Galeria`;
+                }
+
+                const galeriaContainer = document.getElementById('minha-galeria');
+                const countSpan = document.getElementById('photo-count');
+
+                // Case: Coming Soon (No ID provided)
+                if (!folderId) {
+                    galeriaContainer.innerHTML = `
+                        <div class="loading-state" style="padding: 6rem 0;">
+                            <h2 style="font-size: 2rem; margin-bottom: 1rem; color: var(--accent);">EM BREVE</h2>
+                            <p>As fotos desta galeria estarão disponíveis em breve.</p>
+                        </div>
+                    `;
+                    countSpan.textContent = "0 FOTOS";
+                    return;
+                }
+
+                // Append folderId to script URL
+                // Note: The Google Script must effectively handle 'folderId' parameter 
+                // or return specific content based on it.
+                const fetchUrl = `${scriptURL}?folderId=${folderId}`;
+
+                const response = await fetch(fetchUrl);
+                const imagens = await response.json();
+
+                // Process URLs immediately
+                loadedImages = imagens.map(img => {
+                    const urls = getOptimizedUrl(img.url);
+                    return { ...img, displayUrl: urls.display, downloadUrl: urls.download };
+                });
+
+                galeriaContainer.innerHTML = '';
+                countSpan.textContent = `${imagens.length} FOTOS`;
+
+                if (imagens.length === 0) {
+                    galeriaContainer.innerHTML = '<div class="loading-state">Nenhuma imagem encontrada nesta pasta.</div>';
+                    return;
+                }
+
+                loadedImages.forEach(img => {
+                    const div = document.createElement('div');
+                    div.className = 'gallery-item';
+                    // Apply click to container since image is covered
+                    div.onclick = () => openLightbox(img.displayUrl);
+                    div.style.cursor = 'pointer';
+
+                    // Cleaner HTML structure - just the image
+                    div.innerHTML = `
+                        <img src="${img.displayUrl}" alt="${img.name}" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" oncontextmenu="return false;">
+                        <div class="item-overlay" style="pointer-events: none;">
+                            <span style="font-family:'Space Mono'; font-size:0.8rem; color: white; letter-spacing:0.1em;">AMPLIAR</span>
+                        </div>
+                    `;
+                    galeriaContainer.appendChild(div);
+                });
+
+            } catch (error) {
+                console.error('Erro ao carregar a galeria:', error);
+                document.getElementById('minha-galeria').innerHTML =
+                    '<div class="loading-state" style="color:red">Erro ao carregar galeria. Verifique o ID da pasta ou tente novamente.</div>';
+            }
+        }
+
+        // Lightbox Functions
+        function openLightbox(displayUrl) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+
+            img.src = displayUrl;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox(e) {
+            if (e.target !== document.getElementById('lightbox-img')) {
+                document.getElementById('lightbox').classList.remove('active');
+            }
+        }
+
+        // Feature: Download All as Zip
+        async function downloadAll() {
+            const btn = document.getElementById('btn-download-all');
+            const originalText = btn.innerText;
+            const titleElement = document.querySelector('.gallery-title');
+            const rawTitle = titleElement ? titleElement.innerText : 'Galeria';
+            const safeTitle = rawTitle.replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_'); // Sanitize for filename
+
+            if (loadedImages.length === 0) return;
+
+            btn.innerText = "Baixando imagens... 0/" + loadedImages.length;
+            btn.style.opacity = "0.7";
+            btn.disabled = true;
+
+            const zip = new JSZip();
+            // Create a folder inside the zip with the gallery name
+            const folder = zip.folder(safeTitle);
+
+            let successCount = 0;
+            let failCount = 0;
+
+            try {
+                // Fetch all images sequentially or parallel
+                // Parallel is faster but might hit rate limits. Let's do batches or Promise.all
+                const promises = loadedImages.map(async (img, index) => {
+                    try {
+                        // Use displayUrl (lh3) which is more likely to be direct content
+                        // We must use 'cors' mode to access the binary data
+                        const response = await fetch(img.displayUrl, {
+                            mode: 'cors',
+                            credentials: 'omit', // Important: don't send cookies to google to avoid 403 context issues
+                            referrerPolicy: 'no-referrer'
+                        });
+
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                        const contentType = response.headers.get("content-type");
+                        if (!contentType || !contentType.startsWith("image/")) {
+                            throw new Error(`Invalid content-type: ${contentType}. Likely a Google login redirection.`);
+                        }
+
+                        const blob = await response.blob();
+                        const filename = img.name || `foto_${index + 1}.jpg`;
+                        folder.file(filename, blob);
+                        successCount++;
+
+                        // Update progress (optional, simplistic)
+                        btn.innerText = `Processando... ${successCount}/${loadedImages.length}`;
+                    } catch (e) {
+                        console.warn('Failed to load image for zip:', img.name, e);
+                        failCount++;
+                    }
+                });
+
+                await Promise.all(promises);
+
+                if (successCount === 0) {
+                    throw new Error("Nenhuma imagem pôde ser baixada. Bloqueio de segurança do navegador (CORS).");
+                }
+
+                btn.innerText = "Gerando ZIP...";
+                const content = await zip.generateAsync({ type: "blob" });
+                saveAs(content, `${safeTitle}.zip`);
+
+                btn.innerText = "Download Iniciado!";
+                if (failCount > 0) {
+                    alert(`${failCount} imagens falharam ao baixar. O ZIP conterá ${successCount} imagens.`);
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert("Erro ao baixar pasta: " + err.message + "\n\nTente baixar as imagens individualmente.");
+                btn.innerText = "Erro no Download";
+            } finally {
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    btn.style.opacity = "1";
+                }, 3000);
+            }
+        }
+
+        // Init
+        carregarGaleria();
+
+        // Keyboard support for closing lightbox
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Escape") {
+                document.getElementById('lightbox').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+
+</html>

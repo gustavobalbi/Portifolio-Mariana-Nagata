@@ -682,6 +682,7 @@
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+            color: var(--text-primary);
         }
 
         .photo-caption p {
@@ -757,30 +758,90 @@
         }
 
         /* Responsive */
+        /* Tablet / Small Desktop */
         @media (max-width: 968px) {
 
             .about-grid,
             .project {
                 grid-template-columns: 1fr !important;
-                gap: 3rem;
-            }
-
-            .photo-grid {
-                grid-template-columns: repeat(2, 1fr);
-                /* 2 columns on tablet */
+                gap: 4rem;
             }
 
             .project:nth-child(even) .project-image {
-                order: 0;
+                order: -1;
+                /* Image on top for mobile */
             }
 
-            .photo-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 1.5rem;
+            .project-image {
+                aspect-ratio: 16/9;
+                /* Widescreen for stacked layout */
             }
 
             section {
-                padding: 5rem 5%;
+                padding: 6rem 5%;
+            }
+
+            .hero h1 {
+                font-size: clamp(3rem, 12vw, 5rem);
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 968px) {
+            .desktop-only {
+                display: none !important;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                /* Show flex button */
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+                /* Reduce padding to save space */
+            }
+
+            .hero h1 {
+                font-size: 3.5rem;
+                /* Fixed manageable size */
+            }
+
+            /* Remove old nav styles since we are hiding it */
+            .photo-grid {
+                grid-template-columns: 1fr;
+                /* Single column for photos on small phones */
+                gap: 2rem;
+            }
+
+            .about-text h2,
+            .contact h2 {
+                font-size: 2.5rem;
+            }
+
+            .project-info h3 {
+                font-size: 2rem;
+            }
+
+            .d-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+
+            .contact-info {
+                font-size: 0.9rem;
+            }
+
+            .social-links {
+                flex-direction: column;
+                gap: 1rem;
+                width: 100%;
+            }
+
+            .social-link {
+                text-align: center;
+                width: 100%;
             }
         }
 
@@ -910,6 +971,193 @@
             width: 100%;
             opacity: 1;
         }
+
+        /* Mobile Menu Styles */
+        .mobile-menu-btn {
+            display: none;
+            /* Hidden on desktop */
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 2000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: translateY(4px) rotate(45deg);
+            background-color: var(--accent);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            transform: translateY(-4px) rotate(-45deg);
+            background-color: var(--accent);
+        }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.98);
+            /* Almost solid background */
+            z-index: 1500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            backdrop-filter: blur(15px);
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mobile-nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .mobile-nav-list a {
+            font-family: 'Playfair Display', serif;
+            /* More dramatic font for full screen */
+            font-size: 2.5rem;
+            color: var(--text-secondary);
+            /* Start dimmed */
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-list a:hover,
+        .mobile-nav-list a:active {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        /* Desktop Only Utility */
+        @media (min-width: 969px) {
+
+            .mobile-menu-btn,
+            .mobile-overlay {
+                display: none !important;
+            }
+        }
+
+        /* Carousel Menu Styles */
+        .mobile-carousel-nav {
+            display: none;
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            /* Initially hidden below screen */
+            opacity: 0;
+            width: 90%;
+            max-width: 400px;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            z-index: 1000;
+            padding: 0.5rem;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .mobile-carousel-nav.visible {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .nav-arrow {
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .nav-arrow:active {
+            transform: scale(0.9);
+        }
+
+        .nav-viewport {
+            flex: 1;
+            overflow: hidden;
+            margin: 0 0.5rem;
+            position: relative;
+        }
+
+        .nav-track {
+            display: flex;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            width: 100%;
+            /* Will be dynamically managed or static? With DOM moving, width issues? */
+            /* For DOM moving logic: */
+            /* We want each item to be 50% width of the viewport */
+        }
+
+        .carousel-link {
+            flex: 0 0 50%;
+            /* Show 2 items */
+            text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.8rem 0;
+            white-space: nowrap;
+        }
+
+        .carousel-link.active {
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+
+        /* Desktop Only Utility */
+        @media (min-width: 969px) {
+            .mobile-carousel-nav {
+                display: none !important;
+            }
+        }
+
+        /* Mobile show */
+        @media (max-width: 968px) {
+            .mobile-carousel-nav {
+                display: flex;
+                /* Activate it */
+            }
+        }
     </style>
 
 </head>
@@ -924,7 +1172,8 @@
         <div class="glow-orb orb-3"></div>
     </div>
 
-    <nav class="main-nav fade-in">
+    <!-- Desktop Navigation -->
+    <nav class="main-nav desktop-only">
         <ul class="nav-list">
             <li><a href="#about" class="nav-link">Sobre Mim</a></li>
             <li><a href="#audiovisual" class="nav-link">Audiovisual</a></li>
@@ -932,6 +1181,29 @@
             <li><a href="#gallery" class="nav-link">Galeria</a></li>
             <li><a href="#contact" class="nav-link">Contato</a></li>
         </ul>
+    </nav>
+
+    <!-- Mobile Carousel Navigation -->
+    <nav class="mobile-carousel-nav">
+        <button class="nav-arrow nav-prev" aria-label="Anterior">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6" />
+            </svg>
+        </button>
+        <div class="nav-viewport">
+            <div class="nav-track">
+                <a href="#about" class="carousel-link">Sobre Mim</a>
+                <a href="#audiovisual" class="carousel-link">Audiovisual</a>
+                <a href="#events" class="carousel-link">Eventos</a>
+                <a href="#gallery" class="carousel-link">Galeria</a>
+                <a href="#contact" class="carousel-link">Contato</a>
+            </div>
+        </div>
+        <button class="nav-arrow nav-next" aria-label="Próximo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6" />
+            </svg>
+        </button>
     </nav>
     <!-- Hero Section -->
     <section class="hero">
@@ -949,7 +1221,7 @@
         <h2 class="section-title">Sobre Mim</h2>
         <div class="about-grid">
             <div class="about-image-container">
-                <img src="imagens/eu-cv1.jpg" alt="Seu Nome" class="about-image">
+                <img src="imagens/eu-cv1.jpeg" alt="Seu Nome" class="about-image">
             </div>
             <div class="about-text fade-in">
                 <h2>Contando histórias através das lentes</h2>
@@ -1249,48 +1521,52 @@
         <h2 class="section-title">Galeria</h2>
         <div class="photo-grid">
             <!-- Foto 1 -->
-            <div class="photo-item album-effect">
+            <a href="galeria.html?title=Lançamento%20de%20livro%20para%20Giu%20Yukari%20Murakami&id=1XZ14Y2dNlGybBSTbNNPXelWFgrk9_y9x"
+                class="photo-item album-effect">
                 <div class="photo-content">
-                    <img src="imagens/eventos/livro.jpg" alt="Descrição">
+                    <img src="imagens/galeria/livro/capa.jpg" alt="Descrição">
                     <div class="photo-caption">
                         <h4>Lançamento de livro para Giu Yukari Murakami</h4>
                         <p>Cobertura • 2024</p>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Foto 2 -->
-            <div class="photo-item album-effect">
+            <a href="galeria.html?title=Torneio%20Nikkei%20de%20Vôlei" class="photo-item album-effect">
                 <div class="photo-content">
-                    <img src="imagens/eventos/volei.jpeg" alt="Descrição">
+                    <img src="imagens/galeria/volei/capa.jpeg" alt="Descrição">
                     <div class="photo-caption">
                         <h4>Torneio Nikkei de Vôlei</h4>
                         <p>Fotografia • 2025</p>
                     </div>
                 </div>
-            </div>
+            </a>
 
             <!-- Foto 3 -->
-            <div class="photo-item album-effect">
-                <div class="photo-content">
-                    <img src="imagens/eventos/matsuri.jpeg" alt="Descrição">
-                    <div class="photo-caption">
-                        <h4>Amazônia Matsuri</h4>
-                        <p>Fotografia • 2024</p>
+            <a href="galeria.html?title=Amazônia%20Matsuri" class="photo-item album-effect">
+                <div class="photo-item album-effect">
+                    <div class="photo-content">
+                        <img src="imagens/galeria/matsuri/capa.jpeg" alt="Descrição">
+                        <div class="photo-caption">
+                            <h4>Amazônia Matsuri</h4>
+                            <p>Fotografia • 2024</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
+            </a>
             <!-- Foto 4 (Reusing structure for grid of 4) -->
-            <div class="photo-item album-effect">
-                <div class="photo-content">
-                    <img src="imagens/eventos/livro.jpg" alt="Descrição">
-                    <div class="photo-caption">
-                        <h4>Simpósio NPT</h4>
-                        <p>Cobertura • 2025</p>
+            <a href="galeria.html?title=Simpósio%20NPT" class="photo-item album-effect">
+                <div class="photo-item album-effect">
+                    <div class="photo-content">
+                        <img src="imagens/eventos/livro.jpg" alt="Descrição">
+                        <div class="photo-caption">
+                            <h4>Simpósio NPT</h4>
+                            <p>Cobertura • 2025</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </section>
 
@@ -1365,10 +1641,14 @@
         const navObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const nav = document.querySelector('.main-nav');
+                const mobileNav = document.querySelector('.mobile-carousel-nav');
+
                 if (!entry.isIntersecting) {
-                    nav.classList.add('visible');
+                    if (nav) nav.classList.add('visible');
+                    if (mobileNav) mobileNav.classList.add('visible');
                 } else {
-                    nav.classList.remove('visible');
+                    if (nav) nav.classList.remove('visible');
+                    if (mobileNav) mobileNav.classList.remove('visible');
                 }
             });
         }, { threshold: 0.1 });
@@ -1376,6 +1656,72 @@
         const heroSection = document.querySelector('.hero');
         if (heroSection) {
             navObserver.observe(heroSection);
+        }
+
+        // Carousel Menu Logic
+        const navTrack = document.querySelector('.nav-track');
+        const prevBtn = document.querySelector('.nav-prev');
+        const nextBtn = document.querySelector('.nav-next');
+
+        function moveNext() {
+            if (!navTrack) return;
+            const firstItem = navTrack.firstElementChild;
+            navTrack.appendChild(firstItem);
+        }
+
+        function movePrev() {
+            if (!navTrack) return;
+            const lastItem = navTrack.lastElementChild;
+            navTrack.prepend(lastItem);
+        }
+
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                movePrev();
+            });
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                moveNext();
+            });
+        }
+
+        // Highlight active link in carousel based on scroll
+        const sections = document.querySelectorAll('section');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            // Offset for fixed header + visual centering
+            const scrollMiddle = window.scrollY + (window.innerHeight / 3);
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                // Check if the "middle" of user view is within this section
+                if (scrollMiddle >= sectionTop && scrollMiddle < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.carousel-link').forEach(a => {
+                a.classList.remove('active');
+                if (current && a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobileOverlay');
+            const btn = document.querySelector('.mobile-menu-btn');
+            overlay.classList.toggle('active');
+            btn.classList.toggle('active');
+
+            // Prevent scrolling when menu is open
+            if (overlay.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         }
     </script>
 </body>
